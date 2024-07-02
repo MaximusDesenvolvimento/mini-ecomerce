@@ -1,2 +1,1 @@
 # mini-ecomerce
-# mini-ecomerce
