@@ -2,16 +2,25 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class ProductService {
 
-    List<Product> products = List.of(new Product(2L,"iphone",5000,"tecnologia"),new Product(1L,"sansung",5000,"tecnologia"));
+    private static List<Product> products;
 
+    static {
+        products = new ArrayList<>(List.of(new Product(2L,"iphone",5000,"tecnologia"),new Product(1L,"sansung",5000,"tecnologia")));
+
+    }
     //private final ProductRepository productRepository;
     public List<Product> listAll(){
         return products;
@@ -21,6 +30,12 @@ public class ProductService {
         return products.stream()
                 .filter(product -> product.getId().equals(id))
                 .findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Product not found"));
+    }
+
+    public Product save(Product product) {
+        product.setId(ThreadLocalRandom.current().nextLong(3,1000000));
+        products.add(product);
+        return product;
     }
 }
 

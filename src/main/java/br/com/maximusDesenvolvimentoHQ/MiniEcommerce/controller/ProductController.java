@@ -6,10 +6,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,5 +33,10 @@ public class ProductController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Product> findById(@PathVariable long id){
         return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Product> save(@RequestBody Product product){
+        return new ResponseEntity<>(productService.save(product),HttpStatus.CREATED);
     }
 }
