@@ -1,6 +1,7 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.controller;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import lombok.extern.log4j.Log4j2;
@@ -36,10 +37,10 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody Product product){
+    public ResponseEntity<Product> save(@RequestBody ProductPostRequestBody product){
         return new ResponseEntity<>(productService.save(product),HttpStatus.CREATED);
     }
-
+/**
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id){
         productService.delete(id);
@@ -51,4 +52,5 @@ public class ProductController {
         productService.replace(product);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    */
 }

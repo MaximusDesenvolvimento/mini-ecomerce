@@ -5,9 +5,4 @@ server:
 spring:
   data:
     mongodb:
-      authentication-database: admin
-      username: admin
-      password: 123
-      database: test_db
-      port: 27017
-      host: localhost
+      uri: mongodb://admin:123@localhost:27017/miniEcommerceDB?authSource=admin

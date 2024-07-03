@@ -31,22 +31,22 @@ public class ProductService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Product not found"));
     }
 
-    /**
+
     public Product save(Product product) {
-        product.setId(ThreadLocalRandom.current().nextLong(3,1000000));
-        products.add(product);
+        productRepository.save(product);
         return product;
     }
 
     public void delete(long id) {
-        products.remove(findById(id));
+        productRepository.delete(findById(id));
     }
 
-
+    /**
     public void replace(Product product) {
         delete(product.getId());
         products.add(product);
     }
      */
+
 }
 
