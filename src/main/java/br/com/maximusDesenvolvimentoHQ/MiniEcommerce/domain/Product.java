@@ -1,10 +1,14 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document
 public class Product {
 
+    @Id
     private Long id;
     private String name;
     private float price;
@@ -16,5 +20,8 @@ public class Product {
         this.name = name;
         this.price = price;
         this.category = category;
+    }
+
+    public Product(){
     }
 }

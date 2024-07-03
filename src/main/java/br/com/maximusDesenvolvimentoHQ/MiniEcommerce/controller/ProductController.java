@@ -45,4 +45,10 @@ public class ProductController {
         productService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping
+    public ResponseEntity<Product> replace(@RequestBody Product product){
+        productService.replace(product);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
