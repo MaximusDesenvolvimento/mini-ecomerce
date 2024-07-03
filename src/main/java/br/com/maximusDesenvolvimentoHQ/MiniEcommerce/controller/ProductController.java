@@ -2,6 +2,7 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.controller;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import lombok.extern.log4j.Log4j2;
@@ -32,25 +33,24 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable long id){
-        return new ResponseEntity<>(productService.findById(id),HttpStatus.OK);
+    public ResponseEntity<Product> findById(@PathVariable String id){
+        return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id),HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Product> save(@RequestBody ProductPostRequestBody product){
         return new ResponseEntity<>(productService.save(product),HttpStatus.CREATED);
     }
-/**
+
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable long id){
+    public ResponseEntity<Void> delete(@PathVariable String id){
         productService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
-    public ResponseEntity<Product> replace(@RequestBody Product product){
-        productService.replace(product);
+    public ResponseEntity<Product> replace(@RequestBody ProductPutRequestBody productPutRequestBody) {
+        productService.replace(productPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    */
 }

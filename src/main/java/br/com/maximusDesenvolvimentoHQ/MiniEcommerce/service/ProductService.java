@@ -2,51 +2,57 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepository;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 
 public class ProductService {
 
     private final ProductRepository productRepository;
-    ProductService(ProductRepository productRepository){
+
+    ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<Product> listAll(){
+    public List<Product> listAll() {
         return productRepository.findAll();
     }
 
-    public Product findById(long id){
+    public Product findByIdOrThrowBadRequestException(String id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Product not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found"));
     }
 
 
-    public Product save(Product product) {
+    public Product save(ProductPostRequestBody productPostRequestBody) {
+        Product product = Product.builder().name(productPostRequestBody.getName())
+                .price(productPostRequestBody.getPrice())
+                .oldPrice(productPostRequestBody.getOldPrice())
+                .category(productPostRequestBody.getCategory()).build();
         productRepository.save(product);
         return product;
     }
 
-    public void delete(long id) {
-        productRepository.delete(findById(id));
+    public void delete(String id) {
+        productRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-    /**
-    public void replace(Product product) {
-        delete(product.getId());
-        products.add(product);
-    }
-     */
 
+    public void replace(ProductPutRequestBody productPutRequestBody) {
+        Product savedProduct = findByIdOrThrowBadRequestException(productPutRequestBody.getId());
+        Product product = Product.builder()
+                .id(savedProduct.getId())
+                .name(productPutRequestBody.getName())
+                .price(productPutRequestBody.getPrice())
+                .oldPrice(productPutRequestBody.getOldPrice())
+                .category(productPutRequestBody.getCategory()).build();
+        productRepository.save(product);
+    }
 }
 
