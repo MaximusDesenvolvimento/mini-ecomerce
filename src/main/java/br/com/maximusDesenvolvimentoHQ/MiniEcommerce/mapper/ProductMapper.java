@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public abstract class ProductMapper {
-    public static final ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
-    public abstract Product toProduct(ProductPostRequestBody productPostRequestBody);
-    public abstract Product toProduct(ProductPutRequestBody productPutRequestBody);
+public interface ProductMapper {
+    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+    Product toProduct(ProductPostRequestBody productPostRequestBody);
+    Product toProduct(ProductPutRequestBody productPutRequestBody);
 }

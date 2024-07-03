@@ -1,9 +1,11 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.ProductMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepository;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,13 +13,15 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-
+@Log4j2
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
-    ProductService(ProductRepository productRepository) {
+    ProductService(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     public List<Product> listAll() {
@@ -31,10 +35,8 @@ public class ProductService {
 
 
     public Product save(ProductPostRequestBody productPostRequestBody) {
-        Product product = Product.builder().name(productPostRequestBody.getName())
-                .price(productPostRequestBody.getPrice())
-                .oldPrice(productPostRequestBody.getOldPrice())
-                .category(productPostRequestBody.getCategory()).build();
+        Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
+        log.info(productMapper.INSTANCE.toProduct(productPostRequestBody).getName());
         productRepository.save(product);
         return product;
     }
@@ -43,15 +45,10 @@ public class ProductService {
         productRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-
     public void replace(ProductPutRequestBody productPutRequestBody) {
         Product savedProduct = findByIdOrThrowBadRequestException(productPutRequestBody.getId());
-        Product product = Product.builder()
-                .id(savedProduct.getId())
-                .name(productPutRequestBody.getName())
-                .price(productPutRequestBody.getPrice())
-                .oldPrice(productPutRequestBody.getOldPrice())
-                .category(productPutRequestBody.getCategory()).build();
+        Product product = productMapper.INSTANCE.toProduct(productPutRequestBody);
+        product.setId(savedProduct.getId());
         productRepository.save(product);
     }
 }

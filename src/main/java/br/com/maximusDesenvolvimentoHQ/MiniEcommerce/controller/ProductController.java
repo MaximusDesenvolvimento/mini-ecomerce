@@ -38,8 +38,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductPostRequestBody product){
-        return new ResponseEntity<>(productService.save(product),HttpStatus.CREATED);
+    public ResponseEntity<Product> save(@RequestBody ProductPostRequestBody productPostRequestBody){
+        return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
