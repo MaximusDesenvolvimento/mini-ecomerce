@@ -39,4 +39,10 @@ public class ProductController {
     public ResponseEntity<Product> save(@RequestBody Product product){
         return new ResponseEntity<>(productService.save(product),HttpStatus.CREATED);
     }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id){
+        productService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
