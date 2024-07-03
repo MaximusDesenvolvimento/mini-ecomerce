@@ -17,11 +17,9 @@ import java.util.List;
 @Log4j2
 public class ProductController {
 
-    DataUtil dataUtil;
+    private final DataUtil dataUtil;
 
-    private ProductService productService;
-
-
+    private final ProductService productService;
 
     public ProductController(DataUtil dataUtil,ProductService productService){
         this.dataUtil = dataUtil;
