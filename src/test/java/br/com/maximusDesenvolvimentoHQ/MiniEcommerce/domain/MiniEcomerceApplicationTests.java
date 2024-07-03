@@ -1,4 +1,4 @@
-package br.com.maximusDesenvolvimentoHQ.mini.ecomerce;
+package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
