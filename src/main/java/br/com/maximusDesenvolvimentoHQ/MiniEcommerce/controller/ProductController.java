@@ -5,6 +5,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequest
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody ProductPostRequestBody productPostRequestBody){
+    public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody){
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 

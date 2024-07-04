@@ -9,6 +9,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestB
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -37,7 +38,6 @@ public class ProductService {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Product not found"));
     }
-
 
     public Product save(ProductPostRequestBody productPostRequestBody) {
         Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);

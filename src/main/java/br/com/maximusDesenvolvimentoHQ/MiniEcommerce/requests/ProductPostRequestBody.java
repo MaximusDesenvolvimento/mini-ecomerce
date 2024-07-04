@@ -1,8 +1,21 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+
 public class ProductPostRequestBody {
+
+    @NotEmpty(message = "O produto não pode ser vazio")
+    @NotBlank(message = "O produto não pode ser branco")
     private String name;
+
+    @DecimalMin("0.0")
     private float price;
+
+    @DecimalMin("0.0")
     private float oldPrice;
     private String category;
 
@@ -18,7 +31,7 @@ public class ProductPostRequestBody {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(float price)  {
         this.price = price;
     }
 
