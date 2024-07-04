@@ -28,6 +28,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public Product findByName(String name){
+        return productRepository.findByName(name);
+    }
+
     public Product findByIdOrThrowBadRequestException(String id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found"));
