@@ -1,6 +1,7 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.BadRequestException;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.ProductMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepository;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
@@ -34,7 +35,7 @@ public class ProductService {
 
     public Product findByIdOrThrowBadRequestException(String id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found"));
+                .orElseThrow(() -> new BadRequestException("Product not found"));
     }
 
 
