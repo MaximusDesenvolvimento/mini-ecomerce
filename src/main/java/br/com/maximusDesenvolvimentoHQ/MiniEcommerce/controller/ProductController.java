@@ -7,6 +7,8 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +30,9 @@ public class ProductController {
         this.productService = productService;
     }
     @GetMapping
-    public ResponseEntity<List<Product>> list(){
+    public ResponseEntity<Page<Product>> list(Pageable pageable){
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return new ResponseEntity<>(productService.listAll(), HttpStatus.OK);
+        return new ResponseEntity<>(productService.listAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")

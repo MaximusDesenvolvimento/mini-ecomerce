@@ -7,12 +7,9 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepositor
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 @Log4j2
@@ -26,8 +23,8 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
-    public List<Product> listAll() {
-        return productRepository.findAll();
+    public Page<Product> listAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public Product findByName(String name){
