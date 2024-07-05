@@ -1,9 +1,0 @@
-server:
-  port: 8080
-  error:
-    include-stacktrace: ALWAYS
-spring:
-  data:
-    mongodb:
-      uri: mongodb://admin:123@localhost:27017/miniEcommerceDB?authSource=admin
-      auto-index-creation: true   # Automatically create indexes

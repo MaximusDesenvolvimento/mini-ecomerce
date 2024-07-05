@@ -1,0 +1,11 @@
+server:
+  error:
+    include-stacktrace: ALWAYS
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_DB}
+      #auto-index-creation: true   # Automatically create indexes
+      #uri: mongodb://admin:123@localhost:27017/miniEcommerceDB?authSource=admin
+
