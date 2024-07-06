@@ -30,7 +30,7 @@
 		<java.version>17</java.version>
 		<spring-ai.version>1.0.0-M1</spring-ai.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
 		<lombok.version>1.18.32</lombok.version>
 	</properties>
 	<dependencies>
