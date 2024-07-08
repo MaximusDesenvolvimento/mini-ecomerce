@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -44,8 +45,14 @@ public class ProductController {
         return new ResponseEntity<>(productService.findByName(name),HttpStatus.OK);
     }
 
+//    @PostMapping
+//    public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody){
+//        return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
+//    }
+
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody){
+    public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody){
+        log.info(productPostRequestBody.getFile().getName());
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 

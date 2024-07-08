@@ -4,6 +4,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public class ProductPostRequestBody {
@@ -18,6 +19,16 @@ public class ProductPostRequestBody {
     @DecimalMin("0.0")
     private float oldPrice;
     private String category;
+
+    private MultipartFile file;
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public String getName() {
         return name;
@@ -54,10 +65,11 @@ public class ProductPostRequestBody {
     public ProductPostRequestBody() {
     }
 
-    public ProductPostRequestBody(String name, float price, float oldPrice, String category) {
+    public ProductPostRequestBody(String name, float price, float oldPrice, String category, MultipartFile file) {
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;
         this.category = category;
+        this.file = file;
     }
 }
