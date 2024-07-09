@@ -3,7 +3,6 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -20,14 +19,14 @@ public class ProductPostRequestBody {
     private float oldPrice;
     private String category;
 
-    private MultipartFile file;
+    private MultipartFile image;
 
-    public MultipartFile getFile() {
-        return file;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setFile(MultipartFile file) {
-        this.file = file;
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public String getName() {
@@ -65,11 +64,11 @@ public class ProductPostRequestBody {
     public ProductPostRequestBody() {
     }
 
-    public ProductPostRequestBody(String name, float price, float oldPrice, String category, MultipartFile file) {
+    public ProductPostRequestBody(String name, float price, float oldPrice, String category, MultipartFile image) {
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;
         this.category = category;
-        this.file = file;
+        this.image = image;
     }
 }

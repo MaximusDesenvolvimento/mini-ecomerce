@@ -1,19 +1,19 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.controller;
 
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.client.GitHubClient;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
-import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @RestController
@@ -25,9 +25,12 @@ public class ProductController {
 
     private final ProductService productService;
 
-    public ProductController(DataUtil dataUtil,ProductService productService){
+    private final GitHubClient githubClient;
+
+    public ProductController(DataUtil dataUtil, ProductService productService, GitHubClient githubClient){
         this.dataUtil = dataUtil;
         this.productService = productService;
+        this.githubClient = githubClient;
     }
     @GetMapping
     public ResponseEntity<Page<Product>> list(Pageable pageable){
@@ -51,19 +54,19 @@ public class ProductController {
 //    }
 
     @PostMapping
-    public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody){
-        log.info(productPostRequestBody.getFile().getName());
+    public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody) throws IOException {
+//        log.info(productPostRequestBody.getImage().getName());
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
+    public ResponseEntity<Void> delete(@PathVariable String id) throws IOException {
         productService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
-    public ResponseEntity<Product> replace(@RequestBody ProductPutRequestBody productPutRequestBody) {
+    public ResponseEntity<Product> replace(@ModelAttribute ProductPutRequestBody productPutRequestBody) throws IOException {
         productService.replace(productPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

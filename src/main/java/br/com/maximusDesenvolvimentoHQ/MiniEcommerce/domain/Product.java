@@ -17,6 +17,8 @@ public class Product {
     private float price;
     private float oldPrice;
     private String category;
+    private String urlImage;
+    private String sha;
 
     public String getId() {
         return id;
@@ -58,14 +60,32 @@ public class Product {
         this.category = category;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public String getSha() {
+        return sha;
+    }
+
+    public void setSha(String sha) {
+        this.sha = sha;
+    }
+
     public Product() {
     }
 
-    public Product(String id, String name, float price, float oldPrice, String category) {
+    public Product(String id, String name, float price, float oldPrice, String category, String sha, String urlImage) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;
         this.category = category;
+        this.sha = getSha();
+        this.urlImage = urlImage;
     }
 }
