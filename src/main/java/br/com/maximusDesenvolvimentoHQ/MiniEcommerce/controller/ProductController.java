@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RestController
 @Log4j2
@@ -31,6 +32,7 @@ public class ProductController {
         this.productService = productService;
         this.githubClient = githubClient;
     }
+
     @GetMapping("products")
     public ResponseEntity<Page<Product>> list(Pageable pageable){
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
@@ -42,9 +44,16 @@ public class ProductController {
         return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id),HttpStatus.OK);
     }
 
-    @GetMapping(path = "products/find")
-    public ResponseEntity<Product> findByIName(@RequestParam String name){
-        return new ResponseEntity<>(productService.findByName(name),HttpStatus.OK);
+    @GetMapping(path = "products/search")
+    public ResponseEntity<Page<Product>> findByIName(@RequestParam(required = false) String q,
+                                               @RequestParam(required = false) String category,
+                                                     Pageable pageable){
+        if (Objects.nonNull(q)){
+            return new ResponseEntity<>(productService.findByName(q,pageable),HttpStatus.OK);
+        } else if (Objects.nonNull(category)) {
+            return new ResponseEntity<>(productService.findByCategory(category,pageable),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 //    @PostMapping
@@ -52,7 +61,7 @@ public class ProductController {
 //        return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
 //    }
 
-    @PostMapping(path = "products")
+    @PostMapping(path = "product")
     public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody) throws IOException {
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }

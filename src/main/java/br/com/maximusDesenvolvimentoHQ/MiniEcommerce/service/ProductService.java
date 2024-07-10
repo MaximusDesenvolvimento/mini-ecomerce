@@ -36,8 +36,17 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Page<Product> findByName(String name,Pageable pageable) {
+        return productRepository.findByName(name,pageable);
+    }
+
     public Product findByName(String name) {
         return productRepository.findByName(name);
+
+    }
+
+    public Page<Product> findByCategory(String category, Pageable pageable){
+        return productRepository.findByCategory(category, pageable);
     }
 
     public Product findByIdOrThrowBadRequestException(String id) {
@@ -47,7 +56,7 @@ public class ProductService {
 
     public Product save(ProductPostRequestBody productPostRequestBody) throws IOException {
         Optional<Product> productOptional = Optional.ofNullable(findByName(productPostRequestBody.getName()));
-
+        log.info("informação da base: "+productOptional.isEmpty());
         if (productOptional.isEmpty()){
             Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
             Product savedProduct = productRepository.save(product);
