@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("products")
 @Log4j2
 public class ProductController {
 
@@ -32,18 +31,18 @@ public class ProductController {
         this.productService = productService;
         this.githubClient = githubClient;
     }
-    @GetMapping
+    @GetMapping("products")
     public ResponseEntity<Page<Product>> list(Pageable pageable){
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return new ResponseEntity<>(productService.listAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "products/{id}")
     public ResponseEntity<Product> findById(@PathVariable String id){
         return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id),HttpStatus.OK);
     }
 
-    @GetMapping(path = "/find")
+    @GetMapping(path = "products/find")
     public ResponseEntity<Product> findByIName(@RequestParam String name){
         return new ResponseEntity<>(productService.findByName(name),HttpStatus.OK);
     }
@@ -53,18 +52,18 @@ public class ProductController {
 //        return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
 //    }
 
-    @PostMapping
+    @PostMapping(path = "products")
     public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody) throws IOException {
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "product/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) throws IOException {
         productService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "product/{id}")
     public ResponseEntity<Product> replace(@PathVariable String id, @ModelAttribute ProductPutRequestBody productPutRequestBody) throws IOException {
         productService.replace(id,productPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
