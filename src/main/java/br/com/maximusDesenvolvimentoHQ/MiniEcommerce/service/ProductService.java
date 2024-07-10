@@ -68,8 +68,8 @@ public class ProductService {
         productRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-    public void replace(ProductPutRequestBody productPutRequestBody) throws IOException {
-        Product savedProduct = findByIdOrThrowBadRequestException(productPutRequestBody.getId());
+    public void replace(String id, ProductPutRequestBody productPutRequestBody) throws IOException {
+        Product savedProduct = findByIdOrThrowBadRequestException(id);
         log.info("sha do produto salvo: "+savedProduct.getSha());
         log.info("url do produto salvo: "+savedProduct.getUrlImage());
         Product product = productMapper.INSTANCE.toProduct(productPutRequestBody);

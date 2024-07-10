@@ -3,7 +3,6 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductPutRequestBody {
-    private String id;
     private String name;
     private float price;
     private float oldPrice;
@@ -16,14 +15,6 @@ public class ProductPutRequestBody {
 
     public void setImage(MultipartFile image) {
         this.image = image;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -61,8 +52,7 @@ public class ProductPutRequestBody {
     public ProductPutRequestBody() {
     }
 
-    public ProductPutRequestBody(String id, String name, float price, float oldPrice, String category, MultipartFile image) {
-        this.id = id;
+    public ProductPutRequestBody(String name, float price, float oldPrice, String category, MultipartFile image) {
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;

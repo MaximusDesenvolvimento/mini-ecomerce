@@ -64,9 +64,9 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping
-    public ResponseEntity<Product> replace(@ModelAttribute ProductPutRequestBody productPutRequestBody) throws IOException {
-        productService.replace(productPutRequestBody);
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Product> replace(@PathVariable String id, @ModelAttribute ProductPutRequestBody productPutRequestBody) throws IOException {
+        productService.replace(id,productPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
