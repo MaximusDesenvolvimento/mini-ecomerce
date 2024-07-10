@@ -11,12 +11,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Log4j2
 public class GitHubService {
 
-    private final RestTemplate restTemplate;
     private final GitHubClient gitHubClient;
     @Value("${GITHUB_URL}")
     private String githubApiUrl;
@@ -24,39 +25,53 @@ public class GitHubService {
     private String githubAccessToken;
 
     @Autowired
-    public GitHubService(GitHubClient gitHubClient, RestTemplate restTemplate) {
+    public GitHubService(GitHubClient gitHubClient) {
         this.gitHubClient = gitHubClient;
-        this.restTemplate = restTemplate;
     }
 
     public ResponseEntity<GitHubFileResponse> uploadImage(String id, byte[] imageContent) throws IOException {
 
-        String encodedImage = Base64.getEncoder().encodeToString(imageContent);
-
         String repo = "imagens";
-        String path = "product_"+id+"/imagem.png";
+        String path = "product_" + id + "/imagem.png";
         String owner = "MaximusDesenvolvimento";
         String message = "Upload da imagem feita!";
-        return gitHubClient.uploadImage(githubAccessToken,githubApiUrl,message,encodedImage,owner,repo,path);
-    }
-
-    public ResponseEntity<GitHubFileResponse> replaceImage(String id,String sha, byte[] imageContent) throws IOException {
 
         String encodedImage = Base64.getEncoder().encodeToString(imageContent);
 
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("message", message);
+        requestBody.put("content", encodedImage);
+        return gitHubClient.uploadImage(githubAccessToken, githubApiUrl, requestBody,owner, repo, path);
+    }
+
+    public ResponseEntity<GitHubFileResponse> replaceImage(String id, String sha, byte[] imageContent) throws IOException {
+
         String repo = "imagens";
-        String path = "product_"+id+"/imagem.png";
+        String path = "product_" + id + "/imagem.png";
         String owner = "MaximusDesenvolvimento";
         String message = "Replace da imagem feita!";
-        return gitHubClient.replaceImage(githubAccessToken,githubApiUrl,message,encodedImage,owner,repo,path,sha);
-    }
-    public ResponseEntity<String> deleteImage(String id,String sha) throws IOException {
 
+        String encodedImage = Base64.getEncoder().encodeToString(imageContent);
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("message", message);
+        requestBody.put("content", encodedImage);
+        requestBody.put("sha", sha);
+
+        return gitHubClient.replaceImage(githubAccessToken, githubApiUrl, requestBody, owner, repo, path);
+    }
+
+    public ResponseEntity<String> deleteImage(String id, String sha) throws IOException {
 
         String repo = "imagens";
-        String path = "product_"+id+"/imagem.png";
+        String path = "product_" + id + "/imagem.png";
         String owner = "MaximusDesenvolvimento";
         String message = "Delete da imagem feita!";
-        return gitHubClient.deleteImage(githubAccessToken,githubApiUrl,message,owner,repo,path,sha);
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("message", message);
+        requestBody.put("sha", sha);
+
+        return gitHubClient.deleteImage(githubAccessToken, githubApiUrl, requestBody, owner, repo, path);
     }
 }

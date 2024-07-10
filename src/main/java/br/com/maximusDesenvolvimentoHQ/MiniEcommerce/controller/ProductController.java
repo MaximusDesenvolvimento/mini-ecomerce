@@ -55,7 +55,6 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody) throws IOException {
-//        log.info(productPostRequestBody.getImage().getName());
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 

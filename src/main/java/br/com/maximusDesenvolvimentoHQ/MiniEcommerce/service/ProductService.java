@@ -13,9 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -45,16 +45,21 @@ public class ProductService {
                 .orElseThrow(() -> new BadRequestException("Product not found"));
     }
 
-
     public Product save(ProductPostRequestBody productPostRequestBody) throws IOException {
-        Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
-//        log.info(productMapper.INSTANCE.toProduct(productPostRequestBody).getName());
-        Product savedProduct = productRepository.save(product);
-        ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.uploadImage(savedProduct.getId(), productPostRequestBody.getImage().getBytes());
-        product.setUrlImage(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl());
-        product.setSha(gitHubFileResponseResponseEntity.getBody().getContent().getSha());
-        replaceShaUrlImage(product);
-        return product;
+        Optional<Product> productOptional = Optional.ofNullable(findByName(productPostRequestBody.getName()));
+
+        if (productOptional.isEmpty()){
+            Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
+            Product savedProduct = productRepository.save(product);
+            ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.uploadImage(savedProduct.getId(), productPostRequestBody.getImage().getBytes());
+            product.setUrlImage(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl());
+            product.setSha(gitHubFileResponseResponseEntity.getBody().getContent().getSha());
+            replaceShaUrlImage(product);
+            return product;
+        }else {
+            throw new BadRequestException("Produto "+productPostRequestBody.getName()+" já existe.");
+        }
+
     }
 
     public void delete(String id) throws IOException {
