@@ -2,6 +2,8 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.controller;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.client.GitHubClient;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.BadRequestException;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.ImageNotFoundException;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
@@ -68,8 +70,17 @@ public class ProductController {
 
     @DeleteMapping(path = "product/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) throws IOException {
-        productService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            productService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (ImageNotFoundException e){
+            // Produto deletado, mas não há imagem na base de dados para o produto com ID:
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (BadRequestException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping(path = "product/{id}")

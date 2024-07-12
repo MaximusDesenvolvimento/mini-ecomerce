@@ -2,6 +2,7 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.BadRequestException;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.ImageNotFoundException;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.ProductMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepository;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -51,7 +53,7 @@ public class ProductService {
 
     public Product findByIdOrThrowBadRequestException(String id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Product not found"));
+                .orElseThrow(() -> new BadRequestException("Produto não encontrado."));
     }
 
     public Product save(ProductPostRequestBody productPostRequestBody) throws IOException {
@@ -73,8 +75,20 @@ public class ProductService {
 
     public void delete(String id) throws IOException {
         Product deletedProduct = findByIdOrThrowBadRequestException(id);
-        ResponseEntity<String> response = gitHubService.deleteImage(id,deletedProduct.getSha());
-        productRepository.delete(findByIdOrThrowBadRequestException(id));
+        boolean deletedImage = true;
+        try {
+            gitHubService.deleteImage(id,deletedProduct.getSha());
+        }catch (HttpClientErrorException e){
+            if (e.getStatusCode().value() == 422){
+                deletedImage = false;
+            }else{
+                throw e;
+            }
+        }
+        productRepository.delete(deletedProduct);
+        if (!deletedImage){
+            throw new ImageNotFoundException("Produto deletado, mas não há imagem na base de dados para o produto com ID: " + id);
+        }
     }
 
     public void replace(String id, ProductPutRequestBody productPutRequestBody) throws IOException {
