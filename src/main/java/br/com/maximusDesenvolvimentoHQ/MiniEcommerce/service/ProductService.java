@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,10 +59,10 @@ public class ProductService {
 
     public Product save(ProductPostRequestBody productPostRequestBody) throws IOException {
         Optional<Product> productOptional = Optional.ofNullable(findByName(productPostRequestBody.getName()));
-        log.info("informação da base: "+productOptional.isEmpty());
         if (productOptional.isEmpty()){
             Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
             Product savedProduct = productRepository.save(product);
+
             ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.uploadImage(savedProduct.getId(), productPostRequestBody.getImage().getBytes());
             product.setUrlImage(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl());
             product.setSha(gitHubFileResponseResponseEntity.getBody().getContent().getSha());
@@ -70,18 +71,21 @@ public class ProductService {
         }else {
             throw new BadRequestException("Produto "+productPostRequestBody.getName()+" já existe.");
         }
-
     }
 
     public void delete(String id) throws IOException {
         Product deletedProduct = findByIdOrThrowBadRequestException(id);
         boolean deletedImage = true;
         try {
+            log.info("segunda fase: "+deletedProduct.getSha());
             gitHubService.deleteImage(id,deletedProduct.getSha());
+
         }catch (HttpClientErrorException e){
             if (e.getStatusCode().value() == 422){
                 deletedImage = false;
-            }else{
+            } else if (e.getStatusCode().value() == 404) {
+                deletedImage = false;
+            } else{
                 throw e;
             }
         }
@@ -92,18 +96,42 @@ public class ProductService {
     }
 
     public void replace(String id, ProductPutRequestBody productPutRequestBody) throws IOException {
+        ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = null;
         Product savedProduct = findByIdOrThrowBadRequestException(id);
-        log.info("sha do produto salvo: "+savedProduct.getSha());
-        log.info("url do produto salvo: "+savedProduct.getUrlImage());
-        Product product = productMapper.INSTANCE.toProduct(productPutRequestBody);
-        product.setId(savedProduct.getId());
-        product.setSha(savedProduct.getSha());
-        product.setUrlImage(savedProduct.getUrlImage());
-        ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.replaceImage(savedProduct.getId(), savedProduct.getSha(),productPutRequestBody.getImage().getBytes());
-        product.setUrlImage(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl());
-        product.setSha(gitHubFileResponseResponseEntity.getBody().getContent().getSha());
-        replaceShaUrlImage(product);
-        productRepository.save(product);
+        boolean replacedImage = false;
+
+        // mapemaneto dos valores não nulos para savedProduct.
+        updateNonNullAndNonBlankFields(productPutRequestBody,savedProduct);
+
+        log.info("Name"+savedProduct.getName());
+        log.info("price"+savedProduct.getPrice());
+        log.info("Category"+savedProduct.getCategory());
+        log.info("Oldprice"+savedProduct.getOldPrice());
+        log.info("Oldurl"+savedProduct.getUrlImage());
+        log.info("sha "+savedProduct.getSha());
+        log.info("teste para: "+ Objects.nonNull(productPutRequestBody.getImage()));
+
+        if (Objects.nonNull(productPutRequestBody.getImage())){
+            try {
+                    gitHubFileResponseResponseEntity =
+                            gitHubService.replaceImage(savedProduct.getId(), savedProduct.getSha(),
+                                    productPutRequestBody.getImage().getBytes());
+                log.info("imagem atualizada.");
+                replacedImage = true;
+                }catch (HttpClientErrorException e){
+                log.info("não há imagem para atualizar.");
+            }
+        }
+
+        if (replacedImage) {
+            log.info("Aqui não deve entrar.");
+            savedProduct.setUrlImage(Objects.requireNonNull(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl()));
+            savedProduct.setSha(Objects.requireNonNull(gitHubFileResponseResponseEntity.getBody().getContent().getSha()));
+            //replaceShaUrlImage(savedProduct);
+        }
+
+
+        productRepository.save(savedProduct);
     }
 
     public void replaceShaUrlImage(Product product) {
@@ -111,5 +139,20 @@ public class ProductService {
         product.setId(savedProduct.getId());
         productRepository.save(product);
     }
+
+    public void updateNonNullAndNonBlankFields(ProductPutRequestBody productPutRequestBody, Product product){
+        if (productPutRequestBody.getName() != null){
+            product.setName(productPutRequestBody.getName());
+        }
+        if (productPutRequestBody.getPrice() != null) {
+            product.setPrice(productPutRequestBody.getPrice());
+        }
+        if (productPutRequestBody.getOldPrice() != null) {
+            product.setOldPrice(productPutRequestBody.getOldPrice());
+        }
+        if (productPutRequestBody.getCategory() != null) {
+            product.setCategory(productPutRequestBody.getCategory());
+        }
+}
 }
 

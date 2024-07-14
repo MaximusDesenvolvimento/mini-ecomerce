@@ -3,22 +3,31 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.AccessType;
 import org.springframework.web.multipart.MultipartFile;
 
 
 public class ProductPostRequestBody {
 
-    @NotEmpty(message = "O produto não pode ser vazio")
-    @NotBlank(message = "O produto não pode ser branco")
+    @NotEmpty(message = "O campo name do produto não pode ser vazio")
+    @NotBlank(message = "O campo name do produto não pode ser branco")
+    @NotNull(message = "O campo name do produto não pode ser nulo")
     private String name;
 
+    @NotNull(message = "O campo price do produto não pode ser nulo")
     @DecimalMin("0.0")
-    private float price;
+    private Float price;
 
     @DecimalMin("0.0")
-    private float oldPrice;
+    @NotNull(message = "O campo price do produto não pode ser nulo")
+    private Float oldPrice;
+
+    @NotEmpty(message = "O campo category do produto não pode ser vazio")
+    @NotBlank(message = "O campo category do produto não pode ser branco")
     private String category;
 
+    @NotNull(message = "O campo image do produto não pode ser nulo")
     private MultipartFile image;
 
     public MultipartFile getImage() {

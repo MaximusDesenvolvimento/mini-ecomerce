@@ -8,10 +8,13 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequest
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.validation.ImageValidation;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +44,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.listAll(pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "products/{id}")
+    @GetMapping(path = "product/{id}")
     public ResponseEntity<Product> findById(@PathVariable String id){
         return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id),HttpStatus.OK);
     }
@@ -64,13 +67,17 @@ public class ProductController {
 //    }
 
     @PostMapping(path = "product")
-    public ResponseEntity<Product> save(@ModelAttribute ProductPostRequestBody productPostRequestBody) throws IOException {
+    public ResponseEntity<Product> save(@ModelAttribute @Valid ProductPostRequestBody productPostRequestBody) throws IOException {
+        log.info("O tipo do arquivo é: "+productPostRequestBody.getImage().getContentType());
+        ImageValidation.validateImage(productPostRequestBody.getImage());
+
         return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "product/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) throws IOException {
         try {
+            log.info("primeira fase: "+id);
             productService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (ImageNotFoundException e){
@@ -79,6 +86,7 @@ public class ProductController {
         }catch (BadRequestException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
+            log.info("excecao "+ e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
