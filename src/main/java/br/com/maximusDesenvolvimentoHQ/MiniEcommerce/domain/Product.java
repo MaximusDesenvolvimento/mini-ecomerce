@@ -1,11 +1,11 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Document
 @Builder
@@ -19,6 +19,7 @@ public class Product {
     private String category;
     private String urlImage;
     private String sha;
+    private LocalDateTime dateCriation;
 
     public String getId() {
         return id;
@@ -76,16 +77,26 @@ public class Product {
         this.sha = sha;
     }
 
+    public LocalDateTime getDateCriation() {
+        return dateCriation;
+    }
+
+    public void setDateCriation(LocalDateTime dateCriation) {
+        this.dateCriation = dateCriation;
+    }
+
     public Product() {
     }
 
-    public Product(String id, String name, float price, float oldPrice, String category, String sha, String urlImage) {
+    public Product(String id, String name, float price, float oldPrice, String category, String urlImage, String sha, LocalDateTime dateCriation) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;
         this.category = category;
-        this.sha = getSha();
         this.urlImage = urlImage;
+        this.sha = sha;
+        this.dateCriation = dateCriation;
     }
+
 }

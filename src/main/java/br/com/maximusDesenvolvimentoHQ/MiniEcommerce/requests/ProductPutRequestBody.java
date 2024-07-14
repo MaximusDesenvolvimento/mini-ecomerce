@@ -1,5 +1,6 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.validation.ValidBase64;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductPutRequestBody {
@@ -7,13 +8,14 @@ public class ProductPutRequestBody {
     private Float price;
     private Float oldPrice;
     private String category;
-    private MultipartFile image;
+    @ValidBase64
+    private String image;
 
-    public org.springframework.web.multipart.MultipartFile getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -52,7 +54,7 @@ public class ProductPutRequestBody {
     public ProductPutRequestBody() {
     }
 
-    public ProductPutRequestBody(String name, float price, float oldPrice, String category, MultipartFile image) {
+    public ProductPutRequestBody(String name, float price, float oldPrice, String category, String image) {
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;

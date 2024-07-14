@@ -9,6 +9,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequest
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.GitHubFileResponse;
 import lombok.extern.log4j.Log4j2;
+import org.bson.codecs.jsr310.LocalDateTimeCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -61,12 +63,15 @@ public class ProductService {
         Optional<Product> productOptional = Optional.ofNullable(findByName(productPostRequestBody.getName()));
         if (productOptional.isEmpty()){
             Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
+            product.setDateCriation(LocalDateTime.now());
             Product savedProduct = productRepository.save(product);
 
-            ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.uploadImage(savedProduct.getId(), productPostRequestBody.getImage().getBytes());
+            ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.uploadImage(savedProduct.getId(), productPostRequestBody.getImage());
+
             product.setUrlImage(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl());
             product.setSha(gitHubFileResponseResponseEntity.getBody().getContent().getSha());
             replaceShaUrlImage(product);
+
             return product;
         }else {
             throw new BadRequestException("Produto "+productPostRequestBody.getName()+" já existe.");
@@ -77,7 +82,6 @@ public class ProductService {
         Product deletedProduct = findByIdOrThrowBadRequestException(id);
         boolean deletedImage = true;
         try {
-            log.info("segunda fase: "+deletedProduct.getSha());
             gitHubService.deleteImage(id,deletedProduct.getSha());
 
         }catch (HttpClientErrorException e){
@@ -102,35 +106,20 @@ public class ProductService {
 
         // mapemaneto dos valores não nulos para savedProduct.
         updateNonNullAndNonBlankFields(productPutRequestBody,savedProduct);
-
-        log.info("Name"+savedProduct.getName());
-        log.info("price"+savedProduct.getPrice());
-        log.info("Category"+savedProduct.getCategory());
-        log.info("Oldprice"+savedProduct.getOldPrice());
-        log.info("Oldurl"+savedProduct.getUrlImage());
-        log.info("sha "+savedProduct.getSha());
-        log.info("teste para: "+ Objects.nonNull(productPutRequestBody.getImage()));
-
         if (Objects.nonNull(productPutRequestBody.getImage())){
             try {
                     gitHubFileResponseResponseEntity =
                             gitHubService.replaceImage(savedProduct.getId(), savedProduct.getSha(),
-                                    productPutRequestBody.getImage().getBytes());
-                log.info("imagem atualizada.");
+                                    productPutRequestBody.getImage());
                 replacedImage = true;
                 }catch (HttpClientErrorException e){
-                log.info("não há imagem para atualizar.");
             }
         }
 
         if (replacedImage) {
-            log.info("Aqui não deve entrar.");
             savedProduct.setUrlImage(Objects.requireNonNull(gitHubFileResponseResponseEntity.getBody().getContent().getHtmlUrl()));
             savedProduct.setSha(Objects.requireNonNull(gitHubFileResponseResponseEntity.getBody().getContent().getSha()));
-            //replaceShaUrlImage(savedProduct);
         }
-
-
         productRepository.save(savedProduct);
     }
 
@@ -141,6 +130,7 @@ public class ProductService {
     }
 
     public void updateNonNullAndNonBlankFields(ProductPutRequestBody productPutRequestBody, Product product){
+
         if (productPutRequestBody.getName() != null){
             product.setName(productPutRequestBody.getName());
         }

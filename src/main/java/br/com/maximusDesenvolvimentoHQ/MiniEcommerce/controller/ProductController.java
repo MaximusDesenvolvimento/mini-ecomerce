@@ -8,13 +8,11 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequest
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
-import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.validation.ImageValidation;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,68 +30,57 @@ public class ProductController {
 
     private final GitHubClient githubClient;
 
-    public ProductController(DataUtil dataUtil, ProductService productService, GitHubClient githubClient){
+    public ProductController(DataUtil dataUtil, ProductService productService, GitHubClient githubClient) {
         this.dataUtil = dataUtil;
         this.productService = productService;
         this.githubClient = githubClient;
     }
 
     @GetMapping("products")
-    public ResponseEntity<Page<Product>> list(Pageable pageable){
+    public ResponseEntity<Page<Product>> list(Pageable pageable) {
         log.info(dataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return new ResponseEntity<>(productService.listAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "product/{id}")
-    public ResponseEntity<Product> findById(@PathVariable String id){
-        return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id),HttpStatus.OK);
+    public ResponseEntity<Product> findById(@PathVariable String id) {
+        return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id), HttpStatus.OK);
     }
 
     @GetMapping(path = "products/search")
     public ResponseEntity<Page<Product>> findByIName(@RequestParam(required = false) String q,
-                                               @RequestParam(required = false) String category,
-                                                     Pageable pageable){
-        if (Objects.nonNull(q)){
-            return new ResponseEntity<>(productService.findByName(q,pageable),HttpStatus.OK);
+                                                     @RequestParam(required = false) String category,
+                                                     Pageable pageable) {
+        if (Objects.nonNull(q)) {
+            return new ResponseEntity<>(productService.findByName(q, pageable), HttpStatus.OK);
         } else if (Objects.nonNull(category)) {
-            return new ResponseEntity<>(productService.findByCategory(category,pageable),HttpStatus.OK);
+            return new ResponseEntity<>(productService.findByCategory(category, pageable), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody){
-//        return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
-//    }
-
     @PostMapping(path = "product")
-    public ResponseEntity<Product> save(@ModelAttribute @Valid ProductPostRequestBody productPostRequestBody) throws IOException {
-        log.info("O tipo do arquivo é: "+productPostRequestBody.getImage().getContentType());
-        ImageValidation.validateImage(productPostRequestBody.getImage());
-
-        return new ResponseEntity<>(productService.save(productPostRequestBody),HttpStatus.CREATED);
+    public ResponseEntity<Product> saveTeste(@RequestBody @Valid ProductPostRequestBody productPostRequestBody) throws IOException {
+        return new ResponseEntity<>(productService.save(productPostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "product/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) throws IOException {
         try {
-            log.info("primeira fase: "+id);
             productService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (ImageNotFoundException e){
-            // Produto deletado, mas não há imagem na base de dados para o produto com ID:
+        } catch (ImageNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (BadRequestException e){
+        } catch (BadRequestException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            log.info("excecao "+ e);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping(path = "product/{id}")
-    public ResponseEntity<Product> replace(@PathVariable String id, @ModelAttribute ProductPutRequestBody productPutRequestBody) throws IOException {
-        productService.replace(id,productPutRequestBody);
+    public ResponseEntity<Product> replace(@PathVariable String id, @RequestBody @Valid ProductPutRequestBody productPutRequestBody) throws IOException {
+        productService.replace(id, productPutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

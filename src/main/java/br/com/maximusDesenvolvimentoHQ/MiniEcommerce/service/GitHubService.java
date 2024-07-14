@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,26 +23,22 @@ public class GitHubService {
     private String githubAccessToken;
 
     String repo = "store1";
-    //String path = "product/imagens/product_" + id + "/imagem.png";
     String path = "product/imagens/product_";
     String name = "/imagem";
     String type = ".png";
     String owner = "MaximusDesenvolvimento";
-//    String message = "Upload da imagem feita!";
 
     @Autowired
     public GitHubService(GitHubClient gitHubClient) {
         this.gitHubClient = gitHubClient;
     }
 
-    public ResponseEntity<GitHubFileResponse> uploadImage(String id, byte[] imageContent) throws IOException {
+    public ResponseEntity<GitHubFileResponse> uploadImage(String id, String encodedImage) throws IOException {
 
         String repo = this.repo;
         String path = this.path + id + this.name + this.type;
         String owner = this.owner;
         String message = "Upload da imagem feita!";
-
-        String encodedImage = Base64.getEncoder().encodeToString(imageContent);
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("message", message);
@@ -51,14 +46,12 @@ public class GitHubService {
         return gitHubClient.uploadImage(githubAccessToken, githubApiUrl, requestBody,owner, repo, path);
     }
 
-    public ResponseEntity<GitHubFileResponse> replaceImage(String id, String sha, byte[] imageContent) throws IOException {
+    public ResponseEntity<GitHubFileResponse> replaceImage(String id, String sha, String encodedImage) throws IOException {
 
         String repo = this.repo;
         String path = this.path + id + this.name + this.type;
         String owner = this.owner;
         String message = "Replace da imagem feita!";
-
-        String encodedImage = Base64.getEncoder().encodeToString(imageContent);
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("message", message);
