@@ -4,8 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ProductPutRequestBody {
     private String name;
-    private float price;
-    private float oldPrice;
+    private Float price;
+    private Float oldPrice;
     private String category;
     private MultipartFile image;
 
@@ -25,19 +25,19 @@ public class ProductPutRequestBody {
         this.name = name;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    public float getOldPrice() {
+    public Float getOldPrice() {
         return oldPrice;
     }
 
-    public void setOldPrice(float oldPrice) {
+    public void setOldPrice(Float oldPrice) {
         this.oldPrice = oldPrice;
     }
 

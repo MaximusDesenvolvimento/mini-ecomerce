@@ -23,6 +23,14 @@ public class GitHubService {
     @Value("${GITHUB_ACCESS_TOKEN}")
     private String githubAccessToken;
 
+    String repo = "store1";
+    //String path = "product/imagens/product_" + id + "/imagem.png";
+    String path = "product/imagens/product_";
+    String name = "/imagem";
+    String type = ".png";
+    String owner = "MaximusDesenvolvimento";
+//    String message = "Upload da imagem feita!";
+
     @Autowired
     public GitHubService(GitHubClient gitHubClient) {
         this.gitHubClient = gitHubClient;
@@ -30,9 +38,9 @@ public class GitHubService {
 
     public ResponseEntity<GitHubFileResponse> uploadImage(String id, byte[] imageContent) throws IOException {
 
-        String repo = "imagens";
-        String path = "product_" + id + "/imagem.png";
-        String owner = "MaximusDesenvolvimento";
+        String repo = this.repo;
+        String path = this.path + id + this.name + this.type;
+        String owner = this.owner;
         String message = "Upload da imagem feita!";
 
         String encodedImage = Base64.getEncoder().encodeToString(imageContent);
@@ -45,9 +53,9 @@ public class GitHubService {
 
     public ResponseEntity<GitHubFileResponse> replaceImage(String id, String sha, byte[] imageContent) throws IOException {
 
-        String repo = "imagens";
-        String path = "product_" + id + "/imagem.png";
-        String owner = "MaximusDesenvolvimento";
+        String repo = this.repo;
+        String path = this.path + id + this.name + this.type;
+        String owner = this.owner;
         String message = "Replace da imagem feita!";
 
         String encodedImage = Base64.getEncoder().encodeToString(imageContent);
@@ -62,9 +70,9 @@ public class GitHubService {
 
     public ResponseEntity<String> deleteImage(String id, String sha) throws IOException {
 
-        String repo = "imagens";
-        String path = "product_" + id + "/imagem.png";
-        String owner = "MaximusDesenvolvimento";
+        String repo = this.repo;
+        String path = this.path + id + this.name + this.type;
+        String owner = this.owner;
         String message = "Delete da imagem feita!";
 
         Map<String, Object> requestBody = new HashMap<>();
