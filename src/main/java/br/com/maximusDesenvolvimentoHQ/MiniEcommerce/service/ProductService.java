@@ -8,6 +8,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepositor
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.GitHubFileResponse;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import lombok.extern.log4j.Log4j2;
 import org.bson.codecs.jsr310.LocalDateTimeCodec;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,8 @@ public class ProductService {
         Optional<Product> productOptional = Optional.ofNullable(findByName(productPostRequestBody.getName()));
         if (productOptional.isEmpty()){
             Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
-            product.setDateCriation(LocalDateTime.now());
+            product.setDateCriation(DataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+            log.info("Data de criação do produto: "+product.getDateCriation());
             Product savedProduct = productRepository.save(product);
 
             ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = gitHubService.uploadImage(savedProduct.getId(), productPostRequestBody.getImage());

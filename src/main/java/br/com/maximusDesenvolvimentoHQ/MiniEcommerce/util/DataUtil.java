@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class DataUtil {
 
-    public String formatLocalDateTimeToDatabaseStyle(LocalDateTime localDateTime){
-        return DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss").format(localDateTime);
+    public static String formatLocalDateTimeToDatabaseStyle(LocalDateTime localDateTime){
+        return DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm:ss").format(localDateTime);
     }
 }

@@ -50,8 +50,4 @@ public class RestExceptionHandler {
                         .fieldsMessage(fieldsMessage)
                         .build(),HttpStatus.BAD_REQUEST);
     }
-
-
-
-
 }
