@@ -1,7 +1,6 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.validation.ValidBase64;
-import org.springframework.web.multipart.MultipartFile;
 
 public class ProductPutRequestBody {
     private String name;

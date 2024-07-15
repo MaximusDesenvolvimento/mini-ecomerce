@@ -19,7 +19,7 @@ public class Product {
     private String category;
     private String urlImage;
     private String sha;
-    private LocalDateTime dateCriation;
+    private String dateCriation;
 
     public String getId() {
         return id;
@@ -77,18 +77,18 @@ public class Product {
         this.sha = sha;
     }
 
-    public LocalDateTime getDateCriation() {
+    public String getDateCriation() {
         return dateCriation;
     }
 
-    public void setDateCriation(LocalDateTime dateCriation) {
+    public void setDateCriation(String dateCriation) {
         this.dateCriation = dateCriation;
     }
 
     public Product() {
     }
 
-    public Product(String id, String name, float price, float oldPrice, String category, String urlImage, String sha, LocalDateTime dateCriation) {
+    public Product(String id, String name, float price, float oldPrice, String category, String urlImage, String sha, String dateCriation) {
         this.id = id;
         this.name = name;
         this.price = price;
