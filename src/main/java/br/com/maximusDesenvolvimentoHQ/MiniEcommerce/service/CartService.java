@@ -6,6 +6,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.CartItemMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.CartMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.ProductMapper;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.CartRepository;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.CartItemPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.CartPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
@@ -22,10 +23,13 @@ import java.util.List;
 public class CartService {
 
     ProductService productService;
+    CartRepository cartRepository;
+
 
     @Autowired
-    public CartService(ProductService productService) {
+    public CartService(ProductService productService, CartRepository cartRepository) {
         this.productService = productService;
+        this.cartRepository = cartRepository;
     }
 
     public Cart criateCart(String id, CartPostRequestBody cartPostRequestBody){
@@ -52,6 +56,8 @@ public class CartService {
             log.info("Total: "+cart.getTotal());
             log.info("Data do pedido: "+cart.getOrderDate());
             log.info("Id do usuario: "+cart.getUserId());
+
+            cartRepository.save(cart);
 
 //        Cart cart = CartMapper.INSTANCE.toCart(cartPostRequestBody);
         return null;
