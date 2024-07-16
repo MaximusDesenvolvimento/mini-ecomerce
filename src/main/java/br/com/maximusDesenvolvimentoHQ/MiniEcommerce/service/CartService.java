@@ -5,13 +5,14 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.CartItem;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.CartItemMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.CartMapper;
-import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.ProductMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.CartRepository;
-import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.CartItemPostRequestBody;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.CustomCartRepositoryImpl;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.CartPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class CartService {
 
 
     @Autowired
-    public CartService(ProductService productService, CartRepository cartRepository) {
+    public CartService(ProductService productService, CartRepository cartRepository,CustomCartRepositoryImpl customCartRepository) {
         this.productService = productService;
         this.cartRepository = cartRepository;
     }
@@ -61,5 +62,18 @@ public class CartService {
 
 //        Cart cart = CartMapper.INSTANCE.toCart(cartPostRequestBody);
         return null;
+    }
+
+    public Page<Cart> findByUserByOrderDate(String userId, String orderDate, Pageable pageable) {
+        log.info("ignorand time");
+        return cartRepository.findByOrderDateAndUserIdIgnoringTime(orderDate, userId, pageable);
+    }
+
+    public Page<Cart> findByOrderDate(String orderDate, Pageable pageable) {
+        return cartRepository.findByOrderDateIgnoringTime(orderDate,pageable);
+    }
+    public Page<Cart> findByUserId(String userId, Pageable pageable) {
+
+        return cartRepository.findByuserId(userId,pageable);
     }
 }

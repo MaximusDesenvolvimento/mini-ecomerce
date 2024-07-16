@@ -5,7 +5,6 @@ public class CartItem {
     private String id;
     private String productId;
     private Float productQuantity;
-    private String carrinhoId;
     private String name;
     private float price;
     private float oldPrice;
@@ -14,11 +13,10 @@ public class CartItem {
     private String sha;
     private String dateCriation;
 
-    public CartItem(String id, String productId, Float productQuantity, String carrinhoId, String name, float price, float oldPrice, String category, String urlImage, String sha, String dateCriation) {
+    public CartItem(String id, String productId, Float productQuantity, String name, float price, float oldPrice, String category, String urlImage, String sha, String dateCriation) {
         this.id = id;
         this.productId = productId;
         this.productQuantity = productQuantity;
-        this.carrinhoId = carrinhoId;
         this.name = name;
         this.price = price;
         this.oldPrice = oldPrice;
@@ -50,14 +48,6 @@ public class CartItem {
 
     public void setProductQuantity(Float productQuantity) {
         this.productQuantity = productQuantity;
-    }
-
-    public String getCarrinhoId() {
-        return carrinhoId;
-    }
-
-    public void setCarrinhoId(String carrinhoId) {
-        this.carrinhoId = carrinhoId;
     }
 
     public String getName() {
