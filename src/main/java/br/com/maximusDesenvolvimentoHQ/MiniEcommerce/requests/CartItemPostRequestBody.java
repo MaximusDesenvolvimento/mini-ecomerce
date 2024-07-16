@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class ItemCartPostRequestBody {
+public class CartItemPostRequestBody {
 
     @NotNull(message = "productId não pode ser nulo")
     @NotBlank(message = "productId não pode ser branco")
@@ -16,7 +16,7 @@ public class ItemCartPostRequestBody {
     @NotEmpty(message = "productQuantity não pode ser vazio")
     Float productQuantity;
 
-    public ItemCartPostRequestBody(String productId, Float productQuantity) {
+    public CartItemPostRequestBody(String productId, Float productQuantity) {
         this.productId = productId;
         this.productQuantity = productQuantity;
     }
@@ -36,4 +36,5 @@ public class ItemCartPostRequestBody {
     public void setProductQuantity(Float productQuantity) {
         this.productQuantity = productQuantity;
     }
+
 }

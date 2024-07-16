@@ -1,17 +1,25 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 
-public class Carrinho {
+@Document
+public class Cart {
+
+    @Indexed
     private String id;
     private String userId;
-    private String dataPedido;
-    private List<ItemCarrinho> listItem;
+    private String orderDate;
+    private Float total;
+    private List<CartItem> listItem;
 
-    public Carrinho(String id, String userId, String dataPedido, List<ItemCarrinho> listItem) {
+    public Cart(String id, String userId, String orderDate, Float total, List<CartItem> listItem) {
         this.id = id;
         this.userId = userId;
-        this.dataPedido = dataPedido;
+        this.orderDate = orderDate;
+        this.total = total;
         this.listItem = listItem;
     }
 
@@ -23,14 +31,6 @@ public class Carrinho {
         this.id = id;
     }
 
-    public String getDataPedido() {
-        return dataPedido;
-    }
-
-    public void setDataPedido(String dataPedido) {
-        this.dataPedido = dataPedido;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -39,11 +39,27 @@ public class Carrinho {
         this.userId = userId;
     }
 
-    public List<ItemCarrinho> getListItem() {
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public Float getTotal() {
+        return total;
+    }
+
+    public void setTotal(Float total) {
+        this.total = total;
+    }
+
+    public List<CartItem> getListItem() {
         return listItem;
     }
 
-    public void setListItem(List<ItemCarrinho> listItem) {
+    public void setListItem(List<CartItem> listItem) {
         this.listItem = listItem;
     }
 }

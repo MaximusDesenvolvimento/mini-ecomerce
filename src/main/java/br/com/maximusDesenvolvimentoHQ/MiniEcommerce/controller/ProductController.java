@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     @PostMapping(path = "product")
-    public ResponseEntity<Product> saveTeste(@RequestBody @Valid ProductPostRequestBody productPostRequestBody) throws IOException {
+    public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody) throws IOException {
         return new ResponseEntity<>(productService.save(productPostRequestBody), HttpStatus.CREATED);
     }
 
