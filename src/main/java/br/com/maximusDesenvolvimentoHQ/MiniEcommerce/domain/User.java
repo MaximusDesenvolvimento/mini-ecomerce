@@ -102,4 +102,5 @@ public class User {
     public void setAdress(Adress adress) {
         this.adress = adress;
     }
+
 }

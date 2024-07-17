@@ -28,7 +28,9 @@ public class UserPostRequestBody {
     @NotEmpty(message = "O campo adress não pode ser nulo ou vazio")
     private AdressPostRequestBody adress;
 
-    public UserPostRequestBody(String id, String name, int idade, String password, String userName, String sexo, String telefone, String email, AdressPostRequestBody adress) {
+    public UserPostRequestBody(String id, String name, int idade, String password,
+                               String userName, String sexo, String telefone,
+                               String email, AdressPostRequestBody adress) {
         this.id = id;
         this.name = name;
         this.idade = idade;

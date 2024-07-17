@@ -10,6 +10,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.UserPostRequestBod
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,12 +18,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AdressRepository adressRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, AdressRepository adressRepository) {
+    public UserService(UserRepository userRepository, AdressRepository adressRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.adressRepository = adressRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(UserPostRequestBody userPostRequestBody){
@@ -30,6 +32,7 @@ public class UserService {
         adress = adressRepository.save(adress);
         User user = UserMapper.INSTANCE.toUser(userPostRequestBody);
         user.setAdress(adress);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
