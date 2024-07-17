@@ -64,6 +64,10 @@ public class CartService {
         return null;
     }
 
+    public Page<Cart> findAll(Pageable pageable){
+        return cartRepository.findAll(pageable);
+    }
+
     public Page<Cart> findByUserByOrderDate(String userId, String orderDate, Pageable pageable) {
         log.info("ignorand time");
         return cartRepository.findByOrderDateAndUserIdIgnoringTime(orderDate, userId, pageable);
