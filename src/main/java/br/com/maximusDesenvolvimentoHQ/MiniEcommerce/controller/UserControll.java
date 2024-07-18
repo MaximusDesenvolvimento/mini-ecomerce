@@ -22,7 +22,6 @@ public class UserControll {
 
     @PostMapping(path = "user")
     public ResponseEntity<User> criateUser(@RequestBody UserPostRequestBody userPostRequestBody){
-        log.info("recebendo "+userPostRequestBody.getPassword());
         return new ResponseEntity<>(userService.createUser(userPostRequestBody), HttpStatus.CREATED);
     }
 

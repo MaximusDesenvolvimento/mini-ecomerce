@@ -104,8 +104,6 @@ public class GitHubClient {
 
         // Construção da entidade de requisição
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, httpHeaders);
-        log.info("O status do delete e: "+restTemplate.exchange(githubApiUrl, HttpMethod.DELETE, entity,
-                String.class, owner, repo, path).getStatusCode());
         // fazer a requisição
         return restTemplate.exchange(githubApiUrl, HttpMethod.DELETE, entity,
                 String.class, owner, repo, path);

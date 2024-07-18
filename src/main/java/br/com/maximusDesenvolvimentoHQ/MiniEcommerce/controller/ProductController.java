@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -79,8 +81,12 @@ public class ProductController {
     }
 
     @PutMapping(path = "product/{id}")
-    public ResponseEntity<Product> replace(@PathVariable String id, @RequestBody @Valid ProductPutRequestBody productPutRequestBody) throws IOException {
-        productService.replace(id, productPutRequestBody);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> replace(@PathVariable String id, @RequestBody @Valid ProductPutRequestBody productPutRequestBody) throws IOException {
+        try{
+            productService.replace(id, productPutRequestBody);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("erro",HttpStatus.OK);
+        }
     }
 }

@@ -10,6 +10,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestB
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.GitHubFileResponse;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.ProductGetResponseBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.ImageCompressor;
 import lombok.extern.log4j.Log4j2;
 import org.bson.codecs.jsr310.LocalDateTimeCodec;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,6 @@ public class ProductService {
     public Product findByIdOrThrowBadRequestException(String id) throws IOException {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Produto não encontrado."));
-//        product.setUrlImage(gitHubService.downloadImage(product.getId()));
 
         return product;
     }
@@ -75,6 +75,7 @@ public class ProductService {
 
     public Product save(ProductPostRequestBody productPostRequestBody) throws IOException {
         Optional<Product> productOptional = Optional.ofNullable(findByName(productPostRequestBody.getName()));
+        productPostRequestBody.setImage(ImageCompressor.compressAndResizeImage(productPostRequestBody.getImage(),0.5,0.75));
         if (productOptional.isEmpty()){
             Product product = productMapper.INSTANCE.toProduct(productPostRequestBody);
             product.setDateCriation(DataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
@@ -117,6 +118,7 @@ public class ProductService {
     public void replace(String id, ProductPutRequestBody productPutRequestBody) throws IOException {
         ResponseEntity<GitHubFileResponse> gitHubFileResponseResponseEntity = null;
         Product savedProduct = findByIdOrThrowBadRequestException(id);
+        log.info("Erro no replace service");
         boolean replacedImage = false;
 
         // mapemaneto dos valores não nulos para savedProduct.
@@ -128,6 +130,8 @@ public class ProductService {
                                     productPutRequestBody.getImage());
                 replacedImage = true;
                 }catch (HttpClientErrorException e){
+
+
             }
         }
 

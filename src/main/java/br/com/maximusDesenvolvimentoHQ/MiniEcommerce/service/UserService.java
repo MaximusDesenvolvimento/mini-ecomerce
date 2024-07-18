@@ -9,6 +9,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.UserMapper;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.AdressRepository;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.UserRepository;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.UserPostRequestBody;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class UserService {
 
     private final UserRepository userRepository;
@@ -39,13 +41,17 @@ public class UserService {
     }
 
     public User createUser(UserPostRequestBody userPostRequestBody){
-        userRepository.findByUserName(userPostRequestBody.getUserName());
-        Adress adress = AdressMapper.INSTANCE.toAdress(userPostRequestBody.getAdress());
-        adress = adressRepository.save(adress);
-        User user = UserMapper.INSTANCE.toUser(userPostRequestBody);
-        user.setAdress(adress);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        Optional<User> userOptional = userRepository.findByUserName(userPostRequestBody.getUserName());
+        if(userOptional.isEmpty()){
+            Adress adress = AdressMapper.INSTANCE.toAdress(userPostRequestBody.getAdress());
+            adress = adressRepository.save(adress);
+            User user = UserMapper.INSTANCE.toUser(userPostRequestBody);
+            user.setAdress(adress);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(user);
+        }else{
+            throw new BadRequestException("Username já existe");
+        }
     }
 
     public Page<User> listAllUser(Pageable pageable) {
