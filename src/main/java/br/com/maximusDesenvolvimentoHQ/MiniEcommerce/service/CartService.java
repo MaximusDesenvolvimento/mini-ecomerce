@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
-    public Cart criateCart(String id, CartPostRequestBody cartPostRequestBody){
+    public Cart criateCart(String id, CartPostRequestBody cartPostRequestBody) throws IOException {
         List<CartItem> listItem = new ArrayList<>();
         Cart cart = CartMapper.INSTANCE.toCart(cartPostRequestBody);
         cart.setUserId(id);

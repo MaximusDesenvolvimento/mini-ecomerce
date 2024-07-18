@@ -6,6 +6,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.BadRequestExcepti
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.ImageNotFoundException;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.ProductGetResponseBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service.ProductService;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import jakarta.validation.Valid;
@@ -42,8 +43,8 @@ public class ProductController {
     }
 
     @GetMapping(path = "product/{id}")
-    public ResponseEntity<Product> findById(@PathVariable String id) {
-        return new ResponseEntity<>(productService.findByIdOrThrowBadRequestException(id), HttpStatus.OK);
+    public ResponseEntity<ProductGetResponseBody> findById(@PathVariable String id) throws IOException {
+        return new ResponseEntity<>(productService.findByIdOrThrowBadRequestExceptionImage(id), HttpStatus.OK);
     }
 
     @GetMapping(path = "products/search")

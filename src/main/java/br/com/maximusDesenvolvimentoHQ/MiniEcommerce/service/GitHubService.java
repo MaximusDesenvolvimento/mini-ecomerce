@@ -45,6 +45,18 @@ public class GitHubService {
         return gitHubClient.uploadImage(githubAccessToken, githubApiUrl, requestBody,owner, repo, path);
     }
 
+    public byte[] downloadImage(String id) throws IOException {
+
+        String repo = this.repo;
+        String path = this.path + id + this.name + this.type;
+        String owner = this.owner;
+
+        Map<String, Object> requestBody = new HashMap<>();
+        return gitHubClient.downloadImage(githubAccessToken,githubApiUrl,requestBody,owner,repo,path);
+    }
+
+
+
     public ResponseEntity<GitHubFileResponse> replaceImage(String id, String sha, String encodedImage) throws IOException {
 
         String repo = this.repo;

@@ -8,6 +8,7 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.repository.ProductRepositor
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPostRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests.ProductPutRequestBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.GitHubFileResponse;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.ProductGetResponseBody;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.util.DataUtil;
 import lombok.extern.log4j.Log4j2;
 import org.bson.codecs.jsr310.LocalDateTimeCodec;
@@ -55,9 +56,21 @@ public class ProductService {
         return productRepository.findByCategory(category, pageable);
     }
 
-    public Product findByIdOrThrowBadRequestException(String id) {
-        return productRepository.findById(id)
+    public Product findByIdOrThrowBadRequestException(String id) throws IOException {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Produto não encontrado."));
+//        product.setUrlImage(gitHubService.downloadImage(product.getId()));
+
+        return product;
+    }
+
+    public ProductGetResponseBody findByIdOrThrowBadRequestExceptionImage(String id) throws IOException {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Produto não encontrado."));
+        ProductGetResponseBody productGetResponseBody;
+        byte[] base64Image = gitHubService.downloadImage(product.getId());
+        productGetResponseBody = new ProductGetResponseBody(product.getId(),product.getName(),product.getPrice(),product.getOldPrice(),product.getCategory(),product.getDateCriation(),base64Image);
+        return productGetResponseBody;
     }
 
     public Product save(ProductPostRequestBody productPostRequestBody) throws IOException {
@@ -125,7 +138,7 @@ public class ProductService {
         productRepository.save(savedProduct);
     }
 
-    public void replaceShaUrlImage(Product product) {
+    public void replaceShaUrlImage(Product product) throws IOException {
         Product savedProduct = findByIdOrThrowBadRequestException(product.getId());
         product.setId(savedProduct.getId());
         productRepository.save(product);

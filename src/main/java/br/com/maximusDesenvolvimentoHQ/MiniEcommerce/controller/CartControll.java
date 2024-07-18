@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @RestController
@@ -27,7 +28,7 @@ public class CartControll {
 
     @PostMapping(path = "cart/{userId}")
     public ResponseEntity<Cart> creationCart(@PathVariable(value = "userId") String userId,
-                                             @RequestBody @Valid CartPostRequestBody cartPostRequestBody) {
+                                             @RequestBody @Valid CartPostRequestBody cartPostRequestBody) throws IOException {
         return new ResponseEntity<>(cartService.criateCart(userId, cartPostRequestBody), HttpStatus.CREATED);
     }
 

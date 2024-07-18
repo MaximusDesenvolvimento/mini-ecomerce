@@ -17,5 +17,5 @@ github:
     token:${GITHUB_ACCESS_TOKEN}
 
 projeto:
-  jwtExpirationMs: 90000
+  jwtExpirationMs: 900000
   jwtSecret: bxOksa8BHgdAhR80Y3pEYvS5M+MnF2sheFDqprkTqQ4odqoszJLW1ikw64/nT/dTvlgrcBTq7HfK1B9Gai2h5A==

@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 @Log4j2
 public class ItemCartService {
@@ -18,10 +20,8 @@ public class ItemCartService {
         this.productService = productService;
     }
 
-    public Cart criationCart(String id, CartItemPostRequestBody cartItemPostRequestBody){
+    public Cart criationCart(String id, CartItemPostRequestBody cartItemPostRequestBody) throws IOException {
         Product product = productService.findByIdOrThrowBadRequestException(id);
-
-//        log.info("service cart: "+cartItemPostRequestBody);
         return null;
     }
 }
