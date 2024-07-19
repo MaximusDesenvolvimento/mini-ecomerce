@@ -1,5 +1,6 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain;
 
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.enums.RoleEnum;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,8 +19,9 @@ public class User {
     private String telefone;
     private String email;
     private Adress adress;
+    private RoleEnum role;
 
-    public User(String id, String name, int idade, String password, String userName, String sexo, String telefone, String email, Adress adress) {
+    public User(String id, String name, int idade, String password, String userName, String sexo, String telefone, String email, Adress adress, RoleEnum role) {
         this.id = id;
         this.name = name;
         this.idade = idade;
@@ -29,6 +31,7 @@ public class User {
         this.telefone = telefone;
         this.email = email;
         this.adress = adress;
+        this.role = role;
     }
 
     public String getId() {
@@ -103,4 +106,11 @@ public class User {
         this.adress = adress;
     }
 
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Adress;
+import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.enums.RoleEnum;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -28,9 +29,10 @@ public class UserPostRequestBody {
     @NotEmpty(message = "O campo adress não pode ser nulo ou vazio")
     private AdressPostRequestBody adress;
 
-    public UserPostRequestBody(String id, String name, int idade, String password,
-                               String userName, String sexo, String telefone,
-                               String email, AdressPostRequestBody adress) {
+    private RoleEnum role;
+
+    public UserPostRequestBody(String id, String name, int idade, String password, String userName, String sexo,
+                               String telefone, String email, AdressPostRequestBody adress, RoleEnum role) {
         this.id = id;
         this.name = name;
         this.idade = idade;
@@ -40,6 +42,7 @@ public class UserPostRequestBody {
         this.telefone = telefone;
         this.email = email;
         this.adress = adress;
+        this.role = role;
     }
 
     public String getId() {
@@ -50,67 +53,77 @@ public class UserPostRequestBody {
         this.id = id;
     }
 
-    public String getName() {
+    public @NotEmpty(message = "O campo name não pode ser nulo ou vazio") String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotEmpty(message = "O campo name não pode ser nulo ou vazio") String name) {
         this.name = name;
     }
 
+    @NotEmpty(message = "O campo idade não pode ser nulo ou vazio")
+    @Min(18)
     public int getIdade() {
         return idade;
     }
 
-    public void setIdade(int idade) {
+    public void setIdade(@NotEmpty(message = "O campo idade não pode ser nulo ou vazio") @Min(18) int idade) {
         this.idade = idade;
     }
 
-    public String getPassword() {
+    public @NotEmpty(message = "O campo password não pode ser nulo ou vazio") String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotEmpty(message = "O campo password não pode ser nulo ou vazio") String password) {
         this.password = password;
     }
 
-    public String getUserName() {
+    public @NotEmpty(message = "O campo userName não pode ser nulo ou vazio") String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public void setUserName(@NotEmpty(message = "O campo userName não pode ser nulo ou vazio") String userName) {
         this.userName = userName;
     }
 
-    public String getSexo() {
+    public @NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String getSexo() {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(@NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String sexo) {
         this.sexo = sexo;
     }
 
-    public String getTelefone() {
+    public @NotEmpty(message = "O campo telefone não pode ser nulo ou vazio") String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
+    public void setTelefone(@NotEmpty(message = "O campo telefone não pode ser nulo ou vazio") String telefone) {
         this.telefone = telefone;
     }
 
-    public String getEmail() {
+    public @NotEmpty(message = "O campo email não pode ser nulo ou vazio") String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotEmpty(message = "O campo email não pode ser nulo ou vazio") String email) {
         this.email = email;
     }
 
-    public AdressPostRequestBody getAdress() {
+    public @NotEmpty(message = "O campo adress não pode ser nulo ou vazio") AdressPostRequestBody getAdress() {
         return adress;
     }
 
-    public void setAdress(AdressPostRequestBody adress) {
+    public void setAdress(@NotEmpty(message = "O campo adress não pode ser nulo ou vazio") AdressPostRequestBody adress) {
         this.adress = adress;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
     }
 }
