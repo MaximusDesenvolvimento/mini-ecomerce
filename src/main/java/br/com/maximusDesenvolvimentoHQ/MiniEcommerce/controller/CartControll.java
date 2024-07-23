@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class CartControll {
         return new ResponseEntity<>(cartService.criateCart(userId, cartPostRequestBody), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "carts")
     public ResponseEntity<Page<Cart>> carts(Pageable pageable){
         return new ResponseEntity<>(cartService.findAll(pageable),HttpStatus.OK);

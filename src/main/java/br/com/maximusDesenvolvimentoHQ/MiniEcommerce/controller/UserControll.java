@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class UserControll {
         return new ResponseEntity<>(userService.createUser(userPostRequestBody), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "users")
     public ResponseEntity<Page<User>> listAllUser(Pageable pageable){
         return new ResponseEntity<>(userService.listAllUser(pageable),HttpStatus.OK);

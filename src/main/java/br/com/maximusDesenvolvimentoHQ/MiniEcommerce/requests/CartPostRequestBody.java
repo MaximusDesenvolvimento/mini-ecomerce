@@ -1,12 +1,20 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 public class CartPostRequestBody {
 
+    @DecimalMin("0.0")
     private Float total;
+    @DecimalMin("1.0")
     private int quantityProductCart;
+    @NotEmpty(message = "Carrinho não pode ser nulo ou vazio")
     private List<CartItemPostRequestBody> listItem;
 
     public CartPostRequestBody(Float total, int quantityProductCart, List<CartItemPostRequestBody> listItem) {

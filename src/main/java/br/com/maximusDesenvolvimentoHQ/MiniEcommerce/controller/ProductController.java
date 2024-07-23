@@ -45,6 +45,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.listAll(pageable), HttpStatus.OK);
     }
 
+
     @GetMapping(path = "product/{id}")
     public ResponseEntity<ProductGetResponseBody> findById(@PathVariable String id) throws IOException {
         return new ResponseEntity<>(productService.findByIdOrThrowBadRequestExceptionImage(id), HttpStatus.OK);
@@ -62,11 +63,13 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "product")
     public ResponseEntity<Product> save(@RequestBody @Valid ProductPostRequestBody productPostRequestBody) throws IOException {
         return new ResponseEntity<>(productService.save(productPostRequestBody), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "product/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) throws IOException {
         try {
@@ -81,6 +84,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "product/{id}")
     public ResponseEntity<String> replace(@PathVariable String id, @RequestBody @Valid ProductPutRequestBody productPutRequestBody) throws IOException {
         try{
