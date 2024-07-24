@@ -8,4 +8,5 @@ public interface CustomCartRepository {
 
     Page<Cart> findByOrderDateAndUserIdIgnoringTime(String orderDate, String userId, Pageable pageable);
     Page<Cart> findByOrderDateIgnoringTime(String orderDate,Pageable pageable);
+    Page<Cart> findByOrderDateMonthIgnoringTime(String orderDate, Pageable pageable);
 }

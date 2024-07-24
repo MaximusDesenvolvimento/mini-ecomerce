@@ -38,7 +38,7 @@ public class CartService {
         List<CartItem> listItem = new ArrayList<>();
         Cart cart = CartMapper.INSTANCE.toCart(cartPostRequestBody);
         cart.setUserId(id);
-        cart.setOrderDate(DataUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        cart.setOrderDate(LocalDateTime.now());
 
         for(CartItem cartItem : cart.getListItem()){
 
@@ -70,15 +70,29 @@ public class CartService {
     }
 
     public Page<Cart> findByUserByOrderDate(String userId, String orderDate, Pageable pageable) {
-        log.info("ignorand time");
         return cartRepository.findByOrderDateAndUserIdIgnoringTime(orderDate, userId, pageable);
     }
 
     public Page<Cart> findByOrderDate(String orderDate, Pageable pageable) {
         return cartRepository.findByOrderDateIgnoringTime(orderDate,pageable);
     }
+
+    public Page<Cart> findAllByMonth(String orderDate, Pageable pageable){
+        log.info("testando a saida: "+cartRepository.findByOrderDateMonthIgnoringTime(orderDate,pageable));
+        return cartRepository.findByOrderDateMonthIgnoringTime(orderDate,pageable);
+    }
+
     public Page<Cart> findByUserId(String userId, Pageable pageable) {
 
         return cartRepository.findByuserId(userId,pageable);
+    }
+
+    public String getTotalValueByUserId(String userId) {
+        List<Cart> carts = cartRepository.findByuserId(userId);
+        double totalValue = 0;
+        for (Cart cart : carts){
+            totalValue+=cart.getTotal();
+        }
+        return String.valueOf(totalValue);
     }
 }

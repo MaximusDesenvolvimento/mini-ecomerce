@@ -53,7 +53,15 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/product/**").hasRole("ADMIN")
+                                .requestMatchers("/products/**").permitAll()
+                                .requestMatchers("/users/**").permitAll()
                                 .anyRequest().authenticated());
+//        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+//                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(auth ->
+//                        auth.requestMatchers("*/**").permitAll()
+//                                .anyRequest().authenticated());
 
         httpSecurity.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
 

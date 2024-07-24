@@ -3,6 +3,7 @@ package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Document
@@ -11,11 +12,11 @@ public class Cart {
     @Indexed
     private String id;
     private String userId;
-    private String orderDate;
+    private LocalDateTime orderDate;
     private Float total;
     private List<CartItem> listItem;
 
-    public Cart(String id, String userId, String orderDate, Float total, List<CartItem> listItem) {
+    public Cart(String id, String userId, LocalDateTime orderDate, Float total, List<CartItem> listItem) {
         this.id = id;
         this.userId = userId;
         this.orderDate = orderDate;
@@ -39,11 +40,11 @@ public class Cart {
         this.userId = userId;
     }
 
-    public String getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
