@@ -1,6 +1,5 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.requests;
 
-import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Adress;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.enums.RoleEnum;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,13 +14,13 @@ public class UserPostRequestBody {
     private String name;
     @NotEmpty(message = "O campo idade não pode ser nulo ou vazio")
     @Min(18)
-    private int idade;
+    private int age;
     @NotEmpty(message = "O campo password não pode ser nulo ou vazio")
     private String password;
     @NotEmpty(message = "O campo sexo não pode ser nulo ou vazio")
-    private String sexo;
+    private String gender;
     @NotEmpty(message = "O campo telefone não pode ser nulo ou vazio")
-    private String telefone;
+    private String phoneNumber;
     @NotEmpty(message = "O campo email não pode ser nulo ou vazio")
     private String email;
     @NotEmpty(message = "O campo adress não pode ser nulo ou vazio")
@@ -29,14 +28,14 @@ public class UserPostRequestBody {
 
     private RoleEnum role;
 
-    public UserPostRequestBody(String id, String name, int idade, String password, String sexo,
-                               String telefone, String email, AdressPostRequestBody adress, RoleEnum role) {
+    public UserPostRequestBody(String id, String name, int age, String password, String gender,
+                               String phoneNumber, String email, AdressPostRequestBody adress, RoleEnum role) {
         this.id = id;
         this.name = name;
-        this.idade = idade;
+        this.age = age;
         this.password = password;
-        this.sexo = sexo;
-        this.telefone = telefone;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.adress = adress;
         this.role = role;
@@ -60,12 +59,12 @@ public class UserPostRequestBody {
 
     @NotEmpty(message = "O campo idade não pode ser nulo ou vazio")
     @Min(18)
-    public int getIdade() {
-        return idade;
+    public int getAge() {
+        return age;
     }
 
-    public void setIdade(@NotEmpty(message = "O campo idade não pode ser nulo ou vazio") @Min(18) int idade) {
-        this.idade = idade;
+    public void setAge(@NotEmpty(message = "O campo idade não pode ser nulo ou vazio") @Min(18) int age) {
+        this.age = age;
     }
 
     public @NotEmpty(message = "O campo password não pode ser nulo ou vazio") String getPassword() {
@@ -76,20 +75,20 @@ public class UserPostRequestBody {
         this.password = password;
     }
 
-    public @NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String getSexo() {
-        return sexo;
+    public @NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String getGender() {
+        return gender;
     }
 
-    public void setSexo(@NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String sexo) {
-        this.sexo = sexo;
+    public void setGender(@NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String gender) {
+        this.gender = gender;
     }
 
-    public @NotEmpty(message = "O campo telefone não pode ser nulo ou vazio") String getTelefone() {
-        return telefone;
+    public @NotEmpty(message = "O campo telefone não pode ser nulo ou vazio") String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setTelefone(@NotEmpty(message = "O campo telefone não pode ser nulo ou vazio") String telefone) {
-        this.telefone = telefone;
+    public void setPhoneNumber(@NotEmpty(message = "O campo telefone não pode ser nulo ou vazio") String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public @NotEmpty(message = "O campo email não pode ser nulo ou vazio") String getEmail() {

@@ -3,6 +3,8 @@ server:
   error:
     include-stacktrace: NEVER
 
+
+
 spring:
   data:
     mongodb:

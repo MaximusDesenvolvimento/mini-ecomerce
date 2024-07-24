@@ -55,6 +55,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/product/**").hasRole("ADMIN")
                                 .requestMatchers("/products/**").permitAll()
                                 .requestMatchers("/users/**").permitAll()
+                                .requestMatchers("/user/**").permitAll()
                                 .anyRequest().authenticated());
 //        httpSecurity.csrf(AbstractHttpConfigurer::disable)
 //                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))

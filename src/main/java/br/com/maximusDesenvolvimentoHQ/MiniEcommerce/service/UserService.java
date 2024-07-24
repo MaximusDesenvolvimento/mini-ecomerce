@@ -1,7 +1,6 @@
 package br.com.maximusDesenvolvimentoHQ.MiniEcommerce.service;
 
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Adress;
-import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.Product;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.domain.User;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.exception.BadRequestException;
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.mapper.AdressMapper;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -41,8 +39,10 @@ public class UserService {
     }
 
     public User createUser(UserPostRequestBody userPostRequestBody){
-        Optional<User> userOptional = userRepository.findByEmail(userPostRequestBody.getEmail());
-        if(userOptional.isEmpty()){
+        Optional<User> userOptionalByEmail = userRepository.findByEmail(userPostRequestBody.getEmail());
+        Optional<User> userOptionalByPhoneNumber = userRepository.findByPhoneNumber(userPostRequestBody.getPhoneNumber());
+
+        if(userOptionalByEmail.isEmpty() && userOptionalByPhoneNumber.isEmpty()){
             Adress adress = AdressMapper.INSTANCE.toAdress(userPostRequestBody.getAdress());
             adress = adressRepository.save(adress);
             User user = UserMapper.INSTANCE.toUser(userPostRequestBody);
@@ -50,7 +50,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }else{
-            throw new BadRequestException("Email já existe");
+            throw new BadRequestException("Email ou telefone já existe.");
         }
     }
 

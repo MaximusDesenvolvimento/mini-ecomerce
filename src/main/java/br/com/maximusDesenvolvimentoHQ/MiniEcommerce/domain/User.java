@@ -10,21 +10,21 @@ public class User {
     @Indexed
     private String id;
     private String name;
-    private int idade;
+    private int age;
     private String password;
-    private String sexo;
-    private String telefone;
+    private String gender;
+    private String phoneNumber;
     private String email;
     private Adress adress;
     private RoleEnum role;
 
-    public User(String id, String name, int idade, String password, String sexo, String telefone, String email, Adress adress, RoleEnum role) {
+    public User(String id, String name, int age, String password, String gender, String phoneNumber, String email, Adress adress, RoleEnum role) {
         this.id = id;
         this.name = name;
-        this.idade = idade;
+        this.age = age;
         this.password = password;
-        this.sexo = sexo;
-        this.telefone = telefone;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.adress = adress;
         this.role = role;
@@ -46,12 +46,12 @@ public class User {
         this.name = name;
     }
 
-    public int getIdade() {
-        return idade;
+    public int getAge() {
+        return age;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getPassword() {
@@ -62,20 +62,20 @@ public class User {
         this.password = password;
     }
 
-    public String getSexo() {
-        return sexo;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
