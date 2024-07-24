@@ -18,8 +18,6 @@ public class UserPostRequestBody {
     private int idade;
     @NotEmpty(message = "O campo password não pode ser nulo ou vazio")
     private String password;
-    @NotEmpty(message = "O campo userName não pode ser nulo ou vazio")
-    private String userName;
     @NotEmpty(message = "O campo sexo não pode ser nulo ou vazio")
     private String sexo;
     @NotEmpty(message = "O campo telefone não pode ser nulo ou vazio")
@@ -31,13 +29,12 @@ public class UserPostRequestBody {
 
     private RoleEnum role;
 
-    public UserPostRequestBody(String id, String name, int idade, String password, String userName, String sexo,
+    public UserPostRequestBody(String id, String name, int idade, String password, String sexo,
                                String telefone, String email, AdressPostRequestBody adress, RoleEnum role) {
         this.id = id;
         this.name = name;
         this.idade = idade;
         this.password = password;
-        this.userName = userName;
         this.sexo = sexo;
         this.telefone = telefone;
         this.email = email;
@@ -77,14 +74,6 @@ public class UserPostRequestBody {
 
     public void setPassword(@NotEmpty(message = "O campo password não pode ser nulo ou vazio") String password) {
         this.password = password;
-    }
-
-    public @NotEmpty(message = "O campo userName não pode ser nulo ou vazio") String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(@NotEmpty(message = "O campo userName não pode ser nulo ou vazio") String userName) {
-        this.userName = userName;
     }
 
     public @NotEmpty(message = "O campo sexo não pode ser nulo ou vazio") String getSexo() {

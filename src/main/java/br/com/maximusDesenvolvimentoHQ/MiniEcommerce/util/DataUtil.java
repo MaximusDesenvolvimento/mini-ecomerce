@@ -16,7 +16,7 @@ public class DataUtil {
     }
 
     public static LocalDate formatDatabaseStyleToLocalDateTime(String databaseStyle){
-        DateTimeFormatter parser = DateTimeFormatter.ofPattern("MM-yyyy");
+        DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.parse(databaseStyle,parser);
     }
 

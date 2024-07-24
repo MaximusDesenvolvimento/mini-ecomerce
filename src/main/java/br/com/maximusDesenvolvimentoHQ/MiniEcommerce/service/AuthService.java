@@ -7,8 +7,6 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.response.AcessPostResponseB
 import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.security.jwt.JwtUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +33,7 @@ public class AuthService {
         try {
         // cria mecanismo de credencial para o spring
         UsernamePasswordAuthenticationToken userAuth
-                = new UsernamePasswordAuthenticationToken(authPostRequest.getUserName()
+                = new UsernamePasswordAuthenticationToken(authPostRequest.getEmail()
                 ,authPostRequest.getPassword());
 
         // prepara o mecanismo para autenticacao

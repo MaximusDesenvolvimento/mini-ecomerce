@@ -9,14 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Log4j2
 public class UserDetailsImpl implements UserDetails {
 
     private String id;
     private String name;
-    private String userName;
     private String email;
     private String password;
     Collection<? extends GrantedAuthority> authorities;
@@ -32,17 +30,15 @@ public class UserDetailsImpl implements UserDetails {
         }
         return new UserDetailsImpl(user.getId(),
                 user.getName(),
-                user.getUserName(),
                 user.getPassword(),
                 user.getEmail(),
                 authorities,
                 user.getRole());
     }
 
-    public UserDetailsImpl(String id, String name, String userName,String password, String email, Collection<? extends GrantedAuthority> authorities, RoleEnum role) {
+    public UserDetailsImpl(String id, String name, String password, String email, Collection<? extends GrantedAuthority> authorities, RoleEnum role) {
         this.id = id;
         this.name = name;
-        this.userName = userName;
         this.password=password;
         this.email = email;
         this.authorities = authorities;
@@ -62,7 +58,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override

@@ -34,14 +34,14 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
     
-    public User findByUserNameOrThrowBadRequestException(String userName){
-        User user = userRepository.findByUserName(userName)
+    public User findByUserNameOrThrowBadRequestException(String email){
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new BadRequestException("Usuario não encontrado."));
         return user;
     }
 
     public User createUser(UserPostRequestBody userPostRequestBody){
-        Optional<User> userOptional = userRepository.findByUserName(userPostRequestBody.getUserName());
+        Optional<User> userOptional = userRepository.findByEmail(userPostRequestBody.getEmail());
         if(userOptional.isEmpty()){
             Adress adress = AdressMapper.INSTANCE.toAdress(userPostRequestBody.getAdress());
             adress = adressRepository.save(adress);
@@ -50,7 +50,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }else{
-            throw new BadRequestException("Username já existe");
+            throw new BadRequestException("Email já existe");
         }
     }
 

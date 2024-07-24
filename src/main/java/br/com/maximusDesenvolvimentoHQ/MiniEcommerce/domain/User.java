@@ -4,8 +4,6 @@ import br.com.maximusDesenvolvimentoHQ.MiniEcommerce.enums.RoleEnum;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.net.PasswordAuthentication;
-
 @Document
 public class User {
 
@@ -14,19 +12,17 @@ public class User {
     private String name;
     private int idade;
     private String password;
-    private String userName;
     private String sexo;
     private String telefone;
     private String email;
     private Adress adress;
     private RoleEnum role;
 
-    public User(String id, String name, int idade, String password, String userName, String sexo, String telefone, String email, Adress adress, RoleEnum role) {
+    public User(String id, String name, int idade, String password, String sexo, String telefone, String email, Adress adress, RoleEnum role) {
         this.id = id;
         this.name = name;
         this.idade = idade;
         this.password = password;
-        this.userName = userName;
         this.sexo = sexo;
         this.telefone = telefone;
         this.email = email;
@@ -64,14 +60,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getSexo() {
